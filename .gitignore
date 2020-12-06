@@ -1,0 +1,13 @@
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+__pycache__/
+
+# specific files
+Correcting_Resp_Belt.ipynb
+First_respiration_analysis.ipynb
+Quick_resp.ipynb
