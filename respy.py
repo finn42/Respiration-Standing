@@ -294,12 +294,7 @@ def Breath_Continues_Features(sig,scaling=0,filtered=False,interp_style='previou
     import pandas as pd
     local functions: respnormed, diffed,Inspiration_Extract
     '''
-    if filtered:
-        Breaths = Breath_Features(sig,scalingfactor=scaling,filtered=True)
-    else:
-        Breaths = Breath_Features(sig,scalingfactor=scaling,filtered=False)
-    cols = Breaths.columns
-    
+
     # evaluate sampling parameters
     dt = np.nanmean(np.diff(sig.index))
     sf = round(1/dt)
@@ -316,9 +311,13 @@ def Breath_Continues_Features(sig,scaling=0,filtered=False,interp_style='previou
         RespFeatures ['Filt'] = respnormed(RespFeatures ['Raw'],scaling=1)
     else:
         RespFeatures ['Filt'] = df_sig['Raw']
-
-    for col in cols[2:]:
-        if col.startswith('Ex'):
+    
+    if filtered:
+        Breaths = Breath_Features(df_sig,scalingfactor=scaling,filtered=True)
+    else:
+        Breaths = Breath_Features(df_sig,scalingfactor=scaling,filtered=False)
+        
+    if col.startswith('Ex'):
             f = interp1d(Breaths['Ex'],Breaths[col], kind='previous',fill_value='extrapolate')
         else:
             f = interp1d(Breaths['In'],Breaths[col], kind='previous',fill_value='extrapolate')
