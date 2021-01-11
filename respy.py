@@ -303,6 +303,7 @@ def Breath_Continues_Features(sig,scaling=0,filtered=False,interp_style='previou
     df_sig = df_sig.rename(columns={0:'Raw'})
     # remove nans (they sneak in)
     df_sig = df_sig.loc[df_sig['Raw'].notna()]-df_sig.loc[df_sig['Raw'].notna()].mean()
+    cols = df_sig.columns
     
     #prep derivatives of respiration signal
     RespFeatures = pd.DataFrame(index = df_sig.index)
@@ -316,8 +317,10 @@ def Breath_Continues_Features(sig,scaling=0,filtered=False,interp_style='previou
         Breaths = Breath_Features(df_sig,scalingfactor=scaling,filtered=True)
     else:
         Breaths = Breath_Features(df_sig,scalingfactor=scaling,filtered=False)
-        
-    if col.startswith('Ex'):
+    
+    cols = Breaths.columns
+    for col in cols:    
+        if col.startswith('Ex'):
             f = interp1d(Breaths['Ex'],Breaths[col], kind='previous',fill_value='extrapolate')
         else:
             f = interp1d(Breaths['In'],Breaths[col], kind='previous',fill_value='extrapolate')
